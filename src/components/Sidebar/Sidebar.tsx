@@ -11,7 +11,7 @@ import Settings from "../Settings/Settings";
 import Auth from "../Auth/Auth";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { selectAuthState } from "@/store/authSlice";
+import { selectAuthState, selectUserDetailsState } from "@/store/authSlice";
 import { useDisclosure } from "@nextui-org/modal";
 
 import Logo from "../../../public/Logo.svg";
@@ -31,6 +31,7 @@ import Collapse from "../../../public/svgs/sidebar/Collapse.svg";
 const Sidebar = () => {
   const router = useRouter();
   const authState = useSelector(selectAuthState);
+  const userDetails = useSelector(selectUserDetailsState);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selected, setSelected] = useState("history");
 
@@ -202,15 +203,22 @@ const Sidebar = () => {
                     className={styles.icon}
                     onClick={closeSidebar}
                   />
-                  <Image
-                    src={User}
-                    alt="Profile"
-                    className={
-                      selected === "profile" ? styles.iconActive : styles.icon
-                    }
-                    style={{ marginBottom: 0 }}
-                    onClick={handleProfileClick}
-                  />
+                  <div className={styles.profileContainer}>
+                    <Image
+                      src={User}
+                      alt="Profile"
+                      className={
+                        selected === "profile" ? styles.iconActive : styles.icon
+                      }
+                      style={{ marginBottom: 0 }}
+                      onClick={handleProfileClick}
+                    />
+                    {userDetails.isPro && (
+                      <div className={styles.proBadge}>
+                        <span className={styles.proText}>PRO</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
