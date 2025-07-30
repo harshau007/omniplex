@@ -1,16 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Firebase Config
 export const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: "",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASEAPIKEY || "",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASEAUTHDOMAIN || "",
+  projectId: process.env.NEXT_PUBLIC_FIREBASEPROJECTID || "",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASESTORAGEBUCKET || "",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASEMESSAGINGSENDERID || "",
+  appId: process.env.NEXT_PUBLIC_FIREBASEAPPID || "",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASEMEASUREMENTID || "",
 };
 
 const app = initializeApp(firebaseConfig);

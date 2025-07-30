@@ -6,7 +6,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props) {
-  const ogImageUrl = `https://omniplex.ai/api/og?id=${params.id}`;
+  const ogImageUrl = `https://omniplex.ai/api/og?id=${await params.id}`;
 
   return {
     title: "Omniplex",
