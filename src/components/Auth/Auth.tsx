@@ -31,7 +31,11 @@ const Auth = (props: Props) => {
       const userRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userRef);
 
+      let isPro = false;
       if (userDoc.exists()) {
+        const userData = userDoc.data();
+        isPro = userData.isPro || false;
+        
         await setDoc(
           userRef,
           {
@@ -61,6 +65,7 @@ const Auth = (props: Props) => {
           name: user.displayName ?? "",
           email: user.email ?? "",
           profilePic: user.photoURL ?? "",
+          isPro: isPro,
         })
       );
       props.onClose();

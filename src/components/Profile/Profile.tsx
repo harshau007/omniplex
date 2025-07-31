@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import styles from "./Profile.module.css";
+import { resetAISettings } from "@/store/aiSlice";
+import { resetAuth, selectUserDetailsState } from "@/store/authSlice";
+import { resetChat } from "@/store/chatSlice";
+import { useDisclosure } from "@nextui-org/modal";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
+import { getAuth, signOut } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { useDisclosure } from "@nextui-org/modal";
-import Delete from "../Delete/Delete";
-import { getAuth, signOut } from "firebase/auth";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetAISettings } from "@/store/aiSlice";
-import { resetChat } from "@/store/chatSlice";
-import { resetAuth, selectUserDetailsState } from "@/store/authSlice";
+import Delete from "../Delete/Delete";
+import ProPlan from "../ProPlan/ProPlan";
+import styles from "./Profile.module.css";
 
 import User from "../../../public/svgs/sidebar/User.svg";
 
@@ -22,6 +23,11 @@ const Plugins = (props: Props) => {
   const dispatch = useDispatch();
   const userDetails = useSelector(selectUserDetailsState);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isProOpen,
+    onOpen: onProOpen,
+    onClose: onProClose,
+  } = useDisclosure();
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -37,10 +43,16 @@ const Plugins = (props: Props) => {
       console.log("Error logging out:", error);
     }
   };
+
   const handleDelete = (event: React.MouseEvent) => {
     event.stopPropagation();
     onOpen();
   };
+
+  const handleUpgradeToPro = () => {
+    onProOpen();
+  };
+
   return (
     <div className={styles.list}>
       <div className={styles.titleContainer}>
@@ -65,9 +77,31 @@ const Plugins = (props: Props) => {
               <div className={styles.profileText}>{userDetails.name}</div>
               <div className={styles.profileHeader}>Email</div>
               <div className={styles.profileText}>{userDetails.email}</div>
+              <div className={styles.profileHeader}>Plan</div>
+              <div
+                className={`${styles.profileText} ${
+                  userDetails.isPro ? styles.proStatus : ""
+                }`}
+              >
+                {userDetails.isPro ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-[#4ade80] font-semibold">Pro</span>
+                  </div>
+                ) : (
+                  <span className="text-gray-400">Free</span>
+                )}
+              </div>
             </div>
           </div>
           <div className={styles.bottomContainer}>
+            {!userDetails.isPro && (
+              <div
+                onClick={handleUpgradeToPro}
+                className={styles.upgradeButton}
+              >
+                Upgrade to Pro
+              </div>
+            )}
             <div onClick={handleLogout} className={styles.button}>
               Log Out
             </div>
@@ -78,6 +112,7 @@ const Plugins = (props: Props) => {
         </div>
       </ScrollShadow>
       <Delete isOpen={isOpen} onClose={onClose} delete={handleLogout} />
+      <ProPlan isOpen={isProOpen} onClose={onProClose} />
     </div>
   );
 };
