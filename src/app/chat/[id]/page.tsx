@@ -2,11 +2,12 @@ import Chat from "@/components/Chat/Chat";
 import AuthWrapper from "../../AuthWrapper";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
-  const ogImageUrl = `https://omniplex.ai/api/og?id=${await params.id}`;
+  const { id } = await params;
+  const ogImageUrl = `https://omniplex.ai/api/og?id=${id}`;
 
   return {
     title: "Omniplex",
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props) {
           alt: "Omniplex - Web Search AI",
         },
       ],
-      url: `https://omniplex.ai/chat/${params.id}`,
+      url: `https://omniplex.ai/chat/${id}`,
       type: "website",
     },
     twitter: {
@@ -41,10 +42,10 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-const ChatPage = ({ params }: Props) => {
+const ChatPage = async ({ params }: Props) => {
   return (
     <AuthWrapper>
-      <Chat id={params.id} />
+      <Chat id={(await params).id} />
     </AuthWrapper>
   );
 };

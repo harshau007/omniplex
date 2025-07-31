@@ -74,7 +74,7 @@ const PaymentCancel = () => {
               </div>
             </div>
             <div className="text-white text-sm">
-              You can try again whenever you're ready
+              {`You can try again whenever you're ready`}
             </div>
           </motion.div>
 

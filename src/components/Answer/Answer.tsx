@@ -1,15 +1,17 @@
-import React from "react";
-import styles from "./Answer.module.css";
-import Image from "next/image";
-import Markdown from "react-markdown";
-import rehypeRaw from "rehype-raw";
-import rehypeKatex from "rehype-katex";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Skeleton } from "@nextui-org/skeleton";
 import { Citation } from "@/utils/types";
+import { Skeleton } from "@nextui-org/skeleton";
+import Image from "next/image";
+import React from "react";
+import Markdown from "react-markdown";
+import { Prism, SyntaxHighlighterProps } from "react-syntax-highlighter";
+import { vscDarkPlus as dark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeKatex from "rehype-katex";
+import rehypeRaw from "rehype-raw";
+import styles from "./Answer.module.css";
 
 import Logo from "../../../public/Logo.svg";
+
+const SyntaxHighlighter = Prism as any as React.FC<SyntaxHighlighterProps>;
 
 type Props = {
   error: string;
