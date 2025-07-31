@@ -20,6 +20,9 @@ jobs:
           submodules: true
           lfs: false
 
+      - name: Create .env file from secret
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: yarn install and build
         run: |
           yarn install --immutable
