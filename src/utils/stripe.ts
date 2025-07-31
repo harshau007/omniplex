@@ -16,6 +16,11 @@ export const PRO_PLAN_PRODUCT = {
 
 export async function createCheckoutSession(customerEmail?: string) {
   try {
+    const BASE_URL =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : process.env.BASE_URL;
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -32,8 +37,8 @@ export async function createCheckoutSession(customerEmail?: string) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment/cancel`,
+      success_url: `${BASE_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${BASE_URL}/payment/cancel`,
       customer_email: customerEmail,
       metadata: {
         product: "pro_plan",
